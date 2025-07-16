@@ -35,76 +35,79 @@ export function renderTripLog(vehicleName) {
   logs.forEach((log, idx) => {
     const tr = document.createElement('tr');
 
-    // 일련번호
-    const tdIdx = document.createElement('td');
-    tdIdx.textContent = idx + 1;
-    tr.appendChild(tdIdx);
+    const fields = [
+      idx + 1,
+      log.dept,
+      log.pos,
+      log.name,
+      log.purpose || '',
+      log.date || '',
+      log.departPlace || '',
+      log.departKm || '',
+      log.arrivePlace || '',
+      log.arriveKm || '',
+      log.driveKm || '',
+      log.workKm || '',
+      log.fuelAmount || '',
+      log.fuelVolume || '',
+    ];
 
-    // 부서
-    const tdDept = document.createElement('td');
-    tdDept.textContent = log.dept;
-    tr.appendChild(tdDept);
-
-    // 직책
-    const tdPos = document.createElement('td');
-    tdPos.textContent = log.pos;
-    tr.appendChild(tdPos);
-
-    // 성명
-    const tdName = document.createElement('td');
-    tdName.textContent = log.name;
-    tr.appendChild(tdName);
-
-    // 사용 목적
-    const tdPurpose = document.createElement('td');
-    tdPurpose.textContent = log.purpose || '';
-    tr.appendChild(tdPurpose);
-
-    // 사용 일자
-    const tdDate = document.createElement('td');
-    tdDate.textContent = log.date || '';
-    tr.appendChild(tdDate);
-
-    // 출발지
-    const tdDepartPlace = document.createElement('td');
-    tdDepartPlace.textContent = log.departPlace || '';
-    tr.appendChild(tdDepartPlace);
-
-    // 출발 누적 거리
-    const tdDepartKm = document.createElement('td');
-    tdDepartKm.textContent = log.departKm || '';
-    tr.appendChild(tdDepartKm);
-
-    // 도착지
-    const tdArrivePlace = document.createElement('td');
-    tdArrivePlace.textContent = log.arrivePlace || '';
-    tr.appendChild(tdArrivePlace);
-
-    // 도착 누적 거리
-    const tdArriveKm = document.createElement('td');
-    tdArriveKm.textContent = log.arriveKm || '';
-    tr.appendChild(tdArriveKm);
-
-    // 주행 거리
-    const tdDriveKm = document.createElement('td');
-    tdDriveKm.textContent = log.driveKm || '';
-    tr.appendChild(tdDriveKm);
-
-    // 업무용 주행 거리 누계
-    const tdWorkKm = document.createElement('td');
-    tdWorkKm.textContent = log.workKm || '';
-    tr.appendChild(tdWorkKm);
-
-    // 주유 금액
-    const tdFuelAmount = document.createElement('td');
-    tdFuelAmount.textContent = log.fuelAmount || '';
-    tr.appendChild(tdFuelAmount);
-
-    // 주유 용량
-    const tdFuelVolume = document.createElement('td');
-    tdFuelVolume.textContent = log.fuelVolume || '';
-    tr.appendChild(tdFuelVolume);
+    fields.forEach(text => {
+      const td = document.createElement('td');
+      td.textContent = text;
+      tr.appendChild(td);
+    });
 
     tripLogTbody.appendChild(tr);
   });
+}
+
+// 차량별 운행 기록 엑셀 내보내기
+export function exportTripLogToExcel(vehicleName) {
+  if (!vehicleName || !(vehicleName in vehicleTripLogs)) {
+    alert('유효한 차량명을 선택해 주세요.');
+    return;
+  }
+
+  const logs = vehicleTripLogs[vehicleName];
+  if (!logs || logs.length === 0) {
+    alert('선택한 차량의 운행 기록이 없습니다.');
+    return;
+  }
+
+  // 엑셀 워크시트용 2차원 배열 (헤더 포함)
+  const wsData = [
+    ['번호', '부서', '직책', '성명', '사용 목적', '사용 일자', '출발지', '출발 누적 거리', '도착지', '도착 누적 거리', '주행 거리', '업무용 주행 거리 누계', '주유 금액', '주유 용량'],
+  ];
+
+  logs.forEach((log, idx) => {
+    wsData.push([
+      idx + 1,
+      log.dept,
+      log.pos,
+      log.name,
+      log.purpose || '',
+      log.date || '',
+      log.departPlace || '',
+      log.departKm || '',
+      log.arrivePlace || '',
+      log.arriveKm || '',
+      log.driveKm || '',
+      log.workKm || '',
+      log.fuelAmount || '',
+      log.fuelVolume || '',
+    ]);
+  });
+
+  const wb = XLSX.utils.book_new();
+  const ws = XLSX.utils.aoa_to_sheet(wsData);
+  XLSX.utils.book_append_sheet(wb, ws, '운행기록');
+
+  // 파일명 예: 운행기록_레이밴_2025_07.xlsx
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = (today.getMonth() + 1).toString().padStart(2, '0');
+  const filename = `운행기록_${vehicleName}_${year}_${month}.xlsx`;
+
+  XLSX.writeFile(wb, filename);
 }
