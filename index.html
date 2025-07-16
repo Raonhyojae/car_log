@@ -1,10 +1,11 @@
+<!-- index.html -->
 <!DOCTYPE html>
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>차량운행기록부</title>
-  <link rel="stylesheet" href="./css/styles.css" />
+  <title>차량운행기록부 - 7월 출발누적거리 고정 및 차량 추가</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <div class="container" role="main" aria-label="차량운행기록부">
@@ -28,12 +29,38 @@
           </tr>
         </thead>
         <tbody id="basic-info-tbody">
-          <!-- JS에서 렌더링 -->
+          <tr data-vehicle="레이밴">
+            <td class="selectable-vehicle">레이밴</td>
+            <td>185나8606</td>
+            <td class="editable-text"></td>
+            <td>㈜이스트림</td>
+            <td class="editable-number"></td>
+          </tr>
+          <tr data-vehicle="스타리아">
+            <td class="selectable-vehicle">스타리아</td>
+            <td>823로5420</td>
+            <td class="editable-text"></td>
+            <td>㈜이스트림</td>
+            <td class="editable-number"></td>
+          </tr>
+          <tr data-vehicle="1톤 리프트 탑차">
+            <td class="selectable-vehicle">1톤 리프트 탑차</td>
+            <td>802저2485</td>
+            <td class="editable-text"></td>
+            <td>㈜이스트림</td>
+            <td class="editable-number"></td>
+          </tr>
+          <tr data-vehicle="레이밴 282우6998">
+            <td class="selectable-vehicle">레이밴 282우6998</td>
+            <td>282우6998</td>
+            <td class="editable-text"></td>
+            <td>㈜이스트림</td>
+            <td class="editable-number"></td>
+          </tr>
         </tbody>
       </table>
       <div id="add-row-container">
         <button id="add-row-btn" aria-label="행 추가">+</button>
-        <button id="export-excel-btn" aria-label="엑셀 저장">엑셀 저장</button>
       </div>
     </div>
 
@@ -65,49 +92,11 @@
           </tr>
         </thead>
         <tbody id="trip-log-tbody">
-          <!-- JS에서 렌더링 -->
         </tbody>
       </table>
     </div>
   </div>
 
-  <!-- SheetJS CDN -->
-  <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
-
-  <!-- 모듈 스크립트 -->
-  <script type="module">
-    import { initBasicInfo, onVehicleSelected, getBasicInfoData } from './js/basicInfo.js';
-    import { renderTripLog } from './js/tripLog.js';
-    import { exportToExcel } from './js/excelExport.js';
-
-    document.addEventListener('DOMContentLoaded', () => {
-      // 사업연도 표시
-      const today = new Date();
-      document.getElementById('business-year').textContent = today.getFullYear() + '년';
-
-      // 기본정보 초기화
-      initBasicInfo();
-
-      // 차량 선택 이벤트 처리
-      document.getElementById('basic-info-tbody').addEventListener('click', e => {
-        if (e.target.classList.contains('selectable-vehicle')) {
-          const vehicleName = e.target.textContent.trim();
-          onVehicleSelected(vehicleName);
-          renderTripLog(vehicleName);
-        }
-      });
-
-      // 행 추가 버튼
-      document.getElementById('add-row-btn').addEventListener('click', () => {
-        initBasicInfo('addRow');
-      });
-
-      // 엑셀 저장 버튼
-      document.getElementById('export-excel-btn').addEventListener('click', () => {
-        const data = getBasicInfoData();
-        exportToExcel(data);
-      });
-    });
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
