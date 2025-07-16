@@ -164,4 +164,8 @@ export function initBasicInfo(action = '') {
   }
 }
 
-export { onVehicleSelected, basicInfoData as getBasicInfoData };
+export { onVehicleSelected, getBasicInfoData };
+
+function getBasicInfoData() {
+  return basicInfoData;
+}
