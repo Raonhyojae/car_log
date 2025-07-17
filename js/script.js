@@ -51,6 +51,9 @@ const deptOptions = ['기술지원팀', '영업팀'];
 // 직책 선택 옵션
 const posOptions = ['사원', '주임', '대리', '과장', '차장', '부장', '상무', '전무'];
 
+// select 스타일 클래스 이름
+const selectClassName = 'custom-select-no-arrow';
+
 function populateBasicInfoTable() {
   const tbody = document.getElementById('basic-info-tbody');
   tbody.innerHTML = '';
@@ -147,7 +150,7 @@ function makeCellEditable(cell, type = 'text', ariaLabel = '') {
 
 function createSelect(options, selectedValue, ariaLabel) {
   const select = document.createElement('select');
-  select.className = 'name-input';
+  select.className = selectClassName;
   select.setAttribute('aria-label', ariaLabel);
   options.forEach(opt => {
     const option = document.createElement('option');
@@ -398,6 +401,28 @@ function setupEscKeyHandler() {
 window.addEventListener('DOMContentLoaded', () => {
   const today = new Date();
   document.getElementById('business-year').textContent = today.getFullYear() + '년';
+
+  // 스타일 추가: 옅은 보라 배경, 화살표 제거
+  const style = document.createElement('style');
+  style.textContent = `
+    select.${selectClassName} {
+      background-color: #E6E0F8; /* 옅은 보라색 */
+      border: 1px solid #ccc;
+      padding: 2px 6px;
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      cursor: pointer;
+      border-radius: 4px;
+      font-size: 14px;
+      color: #333;
+      outline: none;
+    }
+    select.${selectClassName}::-ms-expand {
+      display: none;
+    }
+  `;
+  document.head.appendChild(style);
 
   populateBasicInfoTable();
 
