@@ -396,6 +396,7 @@ function updateTripLogForVehicle(vehicleName) {
         e.preventDefault();
         saveLog();
         recalcDriveAndCumulative();
+        inputArriveKm.blur();
       }
     });
 
