@@ -351,7 +351,8 @@ function updateTripLogForVehicle(vehicleName) {
     function recalcDriveAndCumulative() {
       const departKmNum = Number(cellDepartKm.textContent) || 0;
       const arriveValRaw = inputArriveKm.value.trim();
-      const arriveKmNum = arriveValRaw === '' ? 0 : Number(arriveValRaw);
+      // 수정: 도착 누적거리가 비었으면 출발누적거리와 같게 처리하여 첫 행부터 계산 정상화
+      const arriveKmNum = arriveValRaw === '' ? departKmNum : Number(arriveValRaw);
       let driveKm = arriveKmNum - departKmNum;
       if (driveKm < 0) driveKm = 0;
       cellDriveKm.textContent = driveKm;
