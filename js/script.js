@@ -9,16 +9,16 @@ const holidays = [
 
 const vehicleTripLogs = {
   '레이밴': [
-    { name: '', dateOffset: 2, departKm: '', arrivePlace: '', arriveKm: '', fuelAmount: '', fuelVolume: '' },
+    { dept: '', pos: '', name: '', dateOffset: 2, departKm: '', arrivePlace: '', arriveKm: '', fuelAmount: '', fuelVolume: '' },
   ],
   '스타리아': [
-    { name: '', dateOffset: 3, departKm: '', arrivePlace: '', arriveKm: '', fuelAmount: '', fuelVolume: '' },
+    { dept: '', pos: '', name: '', dateOffset: 3, departKm: '', arrivePlace: '', arriveKm: '', fuelAmount: '', fuelVolume: '' },
   ],
   '1톤 리프트 탑차': [
-    { name: '', dateOffset: 4, departKm: '', arrivePlace: '', arriveKm: '', fuelAmount: '', fuelVolume: '' },
+    { dept: '', pos: '', name: '', dateOffset: 4, departKm: '', arrivePlace: '', arriveKm: '', fuelAmount: '', fuelVolume: '' },
   ],
   '레이밴 282우6998': [
-    { name: '', dateOffset: 0, departKm: '', arrivePlace: '', arriveKm: '', fuelAmount: '', fuelVolume: '' },
+    { dept: '', pos: '', name: '', dateOffset: 0, departKm: '', arrivePlace: '', arriveKm: '', fuelAmount: '', fuelVolume: '' },
   ],
 };
 
@@ -180,6 +180,26 @@ function updateTripLogForVehicle(vehicleName) {
     cellSerial.textContent = `${dateObj.getMonth() + 1}월 ${dateObj.getDate()}일`;
     row.appendChild(cellSerial);
 
+    // 부서명 (빈 입력 필드)
+    const cellDept = document.createElement('td');
+    const inputDept = document.createElement('input');
+    inputDept.type = 'text';
+    inputDept.className = 'name-input';
+    inputDept.value = logs.find(l => l.dateOffset === idx)?.dept || '';
+    inputDept.setAttribute('aria-label', '부서명 입력');
+    cellDept.appendChild(inputDept);
+    row.appendChild(cellDept);
+
+    // 직책 (빈 입력 필드)
+    const cellPos = document.createElement('td');
+    const inputPos = document.createElement('input');
+    inputPos.type = 'text';
+    inputPos.className = 'name-input';
+    inputPos.value = logs.find(l => l.dateOffset === idx)?.pos || '';
+    inputPos.setAttribute('aria-label', '직책 입력');
+    cellPos.appendChild(inputPos);
+    row.appendChild(cellPos);
+
     // 성명 (투명 input)
     const cellName = document.createElement('td');
     cellName.classList.add('name-cell');
@@ -270,6 +290,8 @@ function updateTripLogForVehicle(vehicleName) {
       }
       const existingLogIndex = vehicleTripLogs[vehicleName].findIndex(l => l.dateOffset === idx);
       const newLog = {
+        dept: inputDept.value.trim(),
+        pos: inputPos.value.trim(),
         name: inputName.value.trim(),
         dateOffset: idx,
         departKm: '',  // 빈칸 유지
@@ -285,7 +307,9 @@ function updateTripLogForVehicle(vehicleName) {
       }
     }
 
-    [inputArriveKm, inputArrivePlace, inputName, inputFuelAmount, inputFuelVolume].forEach(el => {
+    [
+      inputDept, inputPos, inputArriveKm, inputArrivePlace, inputName, inputFuelAmount, inputFuelVolume
+    ].forEach(el => {
       el.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') {
           e.preventDefault();
@@ -301,7 +325,6 @@ function updateTripLogForVehicle(vehicleName) {
       });
     });
 
-    row.appendChild(cellFuelVolume);
     tripLogTbody.appendChild(row);
   });
 }
