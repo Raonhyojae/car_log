@@ -142,7 +142,37 @@ tbody td {
 tbody td:last-child {
   border-right: none;
 }
-.input-text {
+.department-select,
+.position-select {
+  width: 100%;
+  font-size: 0.85rem;
+  padding: 3px 5px;
+  border-radius: 4px;
+  border: none;
+  background: transparent;
+  color: inherit;
+  white-space: nowrap;
+  cursor: pointer;
+  box-sizing: border-box;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  text-align-last: center; /* IE, Edge */
+  text-align: center; /* Firefox, Chrome */
+}
+.department-select:focus,
+.position-select:focus {
+  outline: 2px solid #82aaff;
+  background: #55699e;
+  color: #e0e0e0;
+}
+.name-cell {
+  white-space: nowrap;
+  cursor: text;
+  font-size: 0.85rem;
+  padding: 6px 4px;
+}
+.name-input {
   width: 100%;
   font-size: 0.85rem;
   padding: 3px 5px;
@@ -153,7 +183,30 @@ tbody td:last-child {
   box-sizing: border-box;
   text-align: center;
 }
-.input-text:focus {
+.name-input:focus {
+  outline: 2px solid #82aaff;
+  background: transparent;
+}
+.purpose-work {
+  color: #7dd3fc;
+  font-weight: 700;
+}
+.amount {
+  color: #facc15;
+  font-weight: 700;
+}
+.input-km {
+  width: 100%;
+  font-size: 0.85rem;
+  padding: 3px 5px;
+  border-radius: 4px;
+  border: none;
+  text-align: center;
+  background: transparent;
+  color: #e0e0e0;
+  box-sizing: border-box;
+}
+.input-km:focus {
   outline: 2px solid #82aaff;
   background: transparent;
 }
