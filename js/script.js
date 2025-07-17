@@ -8,6 +8,15 @@ let selectedVehicleName = "";
 // 운행 기록 저장 배열
 const tripLogs = [];
 
+// 사업연도 표시 함수
+function setBusinessYear() {
+  const yearElem = document.getElementById('business-year');
+  if (yearElem) {
+    const now = new Date();
+    yearElem.textContent = now.getFullYear() + '년';
+  }
+}
+
 // 차량 선택 함수
 function selectVehicle(row) {
   // 선택 해제 및 선택 표시
@@ -29,35 +38,30 @@ function calculateAdjustedDistances(vehicleId, departureDist, arrivalDist) {
   if (!(vehicleId in initialDepartureDistances)) {
     initialDepartureDistances[vehicleId] = departureDist;
   }
-  const initial = initialDepartureDistances[vehicleId];
-  const adjustedDeparture = Math.max(departureDist - initial, 0);
-  const adjustedArrival = Math.max(arrivalDist - initial, 0);
-  const drivingDistance = Math.max(adjustedArrival - adjustedDeparture, 0);
-  return { adjustedDeparture, adjustedArrival, drivingDistance };
+  const adjustedDeparture = departureDist - initialDepartureDistances[vehicleId];
+  const adjustedArrival = arrivalDist - initialDepartureDistances[vehicleId];
+  const adjustedDistance = adjustedArrival - adjustedDeparture;
+  return {
+    adjustedDeparture,
+    adjustedArrival,
+    adjustedDistance
+  };
 }
 
-// 운행 기록 렌더링 함수
+// 운행 기록 렌더링
 function renderTripLogs() {
   const tbody = document.getElementById('trip-log-tbody');
   tbody.innerHTML = '';
-  tripLogs.forEach(log => {
-    if (log.vehicleId !== selectedVehicleId) return;
+
+  const filteredLogs = tripLogs.filter(log => log.vehicleId === selectedVehicleId);
+  filteredLogs.forEach(log => {
     const tr = document.createElement('tr');
     tr.innerHTML = `
-      <td>${log.serialNumber}</td>
-      <td>${log.department}</td>
-      <td>${log.position}</td>
-      <td>${log.name}</td>
-      <td>${log.purpose}</td>
       <td>${log.date}</td>
-      <td>${log.departure}</td>
-      <td>${log.adjustedDepartureDistance}</td>
-      <td>${log.arrival}</td>
-      <td>${log.adjustedArrivalDistance}</td>
-      <td>${log.drivingDistance}</td>
-      <td>${log.businessDrivingTotal}</td>
-      <td>${log.fuelAmount}</td>
-      <td>${log.fuelVolume}</td>
+      <td>${log.departureDistance}</td>
+      <td>${log.arrivalDistance}</td>
+      <td>${log.adjustedDistance}</td>
+      <td>${log.notes || ''}</td>
     `;
     tbody.appendChild(tr);
   });
@@ -67,81 +71,58 @@ function renderTripLogs() {
 function resetForm() {
   const form = document.getElementById('trip-log-form');
   form.reset();
-  const lastLog = [...tripLogs].reverse().find(log => log.vehicleId === selectedVehicleId);
-  form.serialNumber.value = lastLog ? lastLog.serialNumber + 1 : 1;
 }
 
-// 이벤트 리스너 등록 및 초기 차량 선택
-window.addEventListener('DOMContentLoaded', () => {
-  const tbody = document.getElementById('basic-info-tbody');
-  tbody.querySelectorAll('tr').forEach(row => {
+// 폼 제출 처리
+function handleFormSubmit(event) {
+  event.preventDefault();
+  if (!selectedVehicleId) {
+    alert('차량을 선택해주세요.');
+    return;
+  }
+
+  const date = document.getElementById('trip-date').value;
+  const departureDistance = Number(document.getElementById('departure-distance').value);
+  const arrivalDistance = Number(document.getElementById('arrival-distance').value);
+  const notes = document.getElementById('notes').value;
+
+  if (arrivalDistance < departureDistance) {
+    alert('도착 누적거리는 출발 누적거리보다 작을 수 없습니다.');
+    return;
+  }
+
+  const { adjustedDistance } = calculateAdjustedDistances(selectedVehicleId, departureDistance, arrivalDistance);
+
+  tripLogs.push({
+    vehicleId: selectedVehicleId,
+    date,
+    departureDistance,
+    arrivalDistance,
+    adjustedDistance,
+    notes
+  });
+
+  renderTripLogs();
+  resetForm();
+}
+
+// 초기화 함수
+function init() {
+  setBusinessYear();
+
+  // 차량 선택 이벤트 바인딩
+  document.querySelectorAll('#basic-info-tbody tr').forEach(row => {
     row.addEventListener('click', () => selectVehicle(row));
     row.addEventListener('keydown', e => {
-      if(e.key === 'Enter' || e.key === ' ') {
+      if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
         selectVehicle(row);
       }
     });
   });
 
-  // 첫 차량 자동 선택
-  const firstRow = tbody.querySelector('tr');
-  if(firstRow) selectVehicle(firstRow);
+  // 폼 제출 이벤트 바인딩
+  document.getElementById('trip-log-form').addEventListener('submit', handleFormSubmit);
+}
 
-  // 운행 기록 추가 폼 제출 이벤트
-  document.getElementById('trip-log-form').addEventListener('submit', e => {
-    e.preventDefault();
-    if (!selectedVehicleId) {
-      alert('차량을 선택해주세요.');
-      return;
-    }
-    const form = e.target;
-    const serialNumber = Number(form.serialNumber.value);
-    const department = form.department.value.trim();
-    const position = form.position.value.trim();
-    const name = form.name.value.trim();
-    const purpose = form.purpose.value.trim();
-    const date = form.date.value;
-    const departure = form.departure.value.trim();
-    const departureDistance = Number(form.departureDistance.value);
-    const arrival = form.arrival.value.trim();
-    const arrivalDistance = Number(form.arrivalDistance.value);
-    const businessDrivingTotal = Number(form.businessDrivingTotal.value) || 0;
-    const fuelAmount = Number(form.fuelAmount.value) || 0;
-    const fuelVolume = Number(form.fuelVolume.value) || 0;
-
-    if (isNaN(serialNumber) || isNaN(departureDistance) || isNaN(arrivalDistance)) {
-      alert('숫자 입력란에 올바른 값을 입력해주세요.');
-      return;
-    }
-
-    const { adjustedDeparture, adjustedArrival, drivingDistance } = calculateAdjustedDistances(
-      selectedVehicleId,
-      departureDistance,
-      arrivalDistance
-    );
-
-    tripLogs.push({
-      vehicleId: selectedVehicleId,
-      serialNumber,
-      department,
-      position,
-      name,
-      purpose,
-      date,
-      departure,
-      departureDistance,
-      adjustedDepartureDistance: adjustedDeparture,
-      arrival,
-      arrivalDistance,
-      adjustedArrivalDistance: adjustedArrival,
-      drivingDistance,
-      businessDrivingTotal,
-      fuelAmount,
-      fuelVolume,
-    });
-
-    renderTripLogs();
-    resetForm();
-  });
-});
+window.addEventListener('DOMContentLoaded', init);
