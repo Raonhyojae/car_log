@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>차량운행기록부 - 수정본</title>
+  <title>차량운행기록부 - 7월 출발누적거리 고정 및 차량 추가</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -34,34 +34,26 @@
             <th>비고</th>
           </tr>
         </thead>
-        <tbody id="trip-log-tbody">
+        <tbody>
           <tr>
             <td>1</td>
-            <!-- 부서명 빈 입력필드 -->
-            <td><input type="text" class="input-text" /></td>
-            <!-- 직책 빈 입력필드 -->
-            <td><input type="text" class="input-text" /></td>
-            <td><input type="text" class="input-text" /></td>
+            <td>영업부</td>
+            <td>대리</td>
+            <td>홍길동</td>
             <td>승용차</td>
             <td>12가3456</td>
             <td>2025-07-01</td>
             <td>08:00</td>
             <td>업무</td>
-            <!-- 출발누적거리 빈 입력필드 -->
-            <td><input type="text" class="input-text" /></td>
-            <!-- 도착누적거리 빈 입력필드 -->
-            <td><input type="text" class="input-text" /></td>
-            <!-- 주행거리 빈 입력필드 -->
-            <td><input type="text" class="input-text" /></td>
-            <td><input type="text" class="input-text" /></td>
-            <td></td>
+            <td>10000</td>
+            <td>10200</td>
+            <td>200</td>
+            <td>30</td>
+            <td>특이사항 없음</td>
           </tr>
-          <!-- 추가 행도 동일 구조로 빈 입력필드 유지 가능 -->
+          <!-- 추가 데이터 행들 -->
         </tbody>
       </table>
-    </div>
-    <div id="add-row-container">
-      <button id="add-row-btn">+ 행 추가</button>
     </div>
   </div>
   <script src="script.js"></script>
