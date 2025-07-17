@@ -1,4 +1,3 @@
-/* style.css */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Nanum+Gothic&display=swap');
 
 * {
@@ -143,37 +142,7 @@ tbody td {
 tbody td:last-child {
   border-right: none;
 }
-.department-select,
-.position-select {
-  width: 100%;
-  font-size: 0.85rem;
-  padding: 3px 5px;
-  border-radius: 4px;
-  border: none;
-  background: transparent;
-  color: inherit;
-  white-space: nowrap;
-  cursor: pointer;
-  box-sizing: border-box;
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  text-align-last: center; /* IE, Edge */
-  text-align: center; /* Firefox, Chrome */
-}
-.department-select:focus,
-.position-select:focus {
-  outline: 2px solid #82aaff;
-  background: #55699e;
-  color: #e0e0e0;
-}
-.name-cell {
-  white-space: nowrap;
-  cursor: text;
-  font-size: 0.85rem;
-  padding: 6px 4px;
-}
-.name-input {
+.input-text {
   width: 100%;
   font-size: 0.85rem;
   padding: 3px 5px;
@@ -184,30 +153,7 @@ tbody td:last-child {
   box-sizing: border-box;
   text-align: center;
 }
-.name-input:focus {
-  outline: 2px solid #82aaff;
-  background: transparent;
-}
-.purpose-work {
-  color: #7dd3fc;
-  font-weight: 700;
-}
-.amount {
-  color: #facc15;
-  font-weight: 700;
-}
-.input-km {
-  width: 100%;
-  font-size: 0.85rem;
-  padding: 3px 5px;
-  border-radius: 4px;
-  border: none;
-  text-align: center;
-  background: transparent;
-  color: #e0e0e0;
-  box-sizing: border-box;
-}
-.input-km:focus {
+.input-text:focus {
   outline: 2px solid #82aaff;
   background: transparent;
 }
@@ -264,58 +210,4 @@ tbody td:nth-child(14) { width: 5%; }
   background-color: #82aaff;
   color: #121212;
   outline: none;
-}
-#notice {
-  background: #2a2a3d;
-  color: #facc15;
-  font-weight: 700;
-  font-size: 1.4rem;
-  padding: 20px;
-  border-radius: 12px;
-  text-align: center;
-  box-shadow: 0 4px 24px #000000bb;
-  user-select: none;
-}
-@media (max-width: 1024px) {
-  .container {
-    padding: 30px 25px 40px 25px;
-  }
-  h1 {
-    font-size: 2.4rem;
-    margin-bottom: 30px;
-  }
-  thead th, tbody td {
-    padding: 10px 4px;
-    font-size: 0.8rem;
-  }
-  caption {
-    font-size: 1.4rem;
-    padding: 14px 16px;
-  }
-  .input-km {
-    font-size: 0.8rem;
-  }
-  .department-select,
-  .position-select {
-    font-size: 0.8rem;
-  }
-  #notice {
-    font-size: 1.1rem;
-    padding: 16px;
-  }
-}
-@media (max-width: 640px) {
-  .container {
-    padding: 20px 15px 30px 15px;
-  }
-  table {
-    font-size: 0.7rem;
-  }
-}
-td.selectable-vehicle.selected-vehicle {
-  background-color: #41518f;
-  color: #e0e7ff;
-  font-weight: 700;
-  border-radius: 6px;
-  user-select: none;
 }
