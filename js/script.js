@@ -9,16 +9,16 @@ const holidays = [
 
 const vehicleTripLogs = {
   '레이밴': [
-    { dept: '기술지원팀', pos: '과장', name: '', dateOffset: 2, departKm: '', arrivePlace: '', arriveKm: '', fuelAmount: '', fuelVolume: '' },
+    { name: '', dateOffset: 2, departKm: '', arrivePlace: '', arriveKm: '', fuelAmount: '', fuelVolume: '' },
   ],
   '스타리아': [
-    { dept: '기술지원팀', pos: '과장', name: '', dateOffset: 3, departKm: '', arrivePlace: '', arriveKm: '', fuelAmount: '', fuelVolume: '' },
+    { name: '', dateOffset: 3, departKm: '', arrivePlace: '', arriveKm: '', fuelAmount: '', fuelVolume: '' },
   ],
   '1톤 리프트 탑차': [
-    { dept: '영업팀', pos: '대리', name: '', dateOffset: 4, departKm: '', arrivePlace: '', arriveKm: '', fuelAmount: '', fuelVolume: '' },
+    { name: '', dateOffset: 4, departKm: '', arrivePlace: '', arriveKm: '', fuelAmount: '', fuelVolume: '' },
   ],
   '레이밴 282우6998': [
-    { dept: '영업팀', pos: '대리', name: '', dateOffset: 0, departKm: '', arrivePlace: '', arriveKm: '', fuelAmount: '', fuelVolume: '' },
+    { name: '', dateOffset: 0, departKm: '', arrivePlace: '', arriveKm: '', fuelAmount: '', fuelVolume: '' },
   ],
 };
 
@@ -180,44 +180,13 @@ function updateTripLogForVehicle(vehicleName) {
     cellSerial.textContent = `${dateObj.getMonth() + 1}월 ${dateObj.getDate()}일`;
     row.appendChild(cellSerial);
 
-    // 부서 (select, 중앙정렬, 옵션 제한)
-    const cellDept = document.createElement('td');
-    const log = logs.find(l => l.dateOffset === idx);
-    const selectDept = document.createElement('select');
-    selectDept.className = 'department-select';
-    selectDept.setAttribute('aria-label', '부서명 선택');
-    ['기술지원팀', '영업팀'].forEach(opt => {
-      const optionEl = document.createElement('option');
-      optionEl.value = opt;
-      optionEl.textContent = opt;
-      if (log && log.dept === opt) optionEl.selected = true;
-      selectDept.appendChild(optionEl);
-    });
-    cellDept.appendChild(selectDept);
-    row.appendChild(cellDept);
-
-    // 직책 (select)
-    const cellPos = document.createElement('td');
-    const selectPos = document.createElement('select');
-    selectPos.className = 'position-select';
-    selectPos.setAttribute('aria-label', '직책 선택');
-    ['사원', '주임', '대리', '과장', '차장', '부장', '상무', '전무'].forEach(opt => {
-      const optionEl = document.createElement('option');
-      optionEl.value = opt;
-      optionEl.textContent = opt;
-      if (log && log.pos === opt) optionEl.selected = true;
-      selectPos.appendChild(optionEl);
-    });
-    cellPos.appendChild(selectPos);
-    row.appendChild(cellPos);
-
     // 성명 (투명 input)
     const cellName = document.createElement('td');
     cellName.classList.add('name-cell');
     const inputName = document.createElement('input');
     inputName.type = 'text';
     inputName.className = 'name-input';
-    inputName.value = log ? log.name : '';
+    inputName.value = logs.find(l => l.dateOffset === idx)?.name || '';
     inputName.setAttribute('aria-label', '성명 입력');
     cellName.appendChild(inputName);
     row.appendChild(cellName);
@@ -248,7 +217,7 @@ function updateTripLogForVehicle(vehicleName) {
     const inputArrivePlace = document.createElement('input');
     inputArrivePlace.type = 'text';
     inputArrivePlace.className = 'name-input';
-    inputArrivePlace.value = log ? log.arrivePlace : '';
+    inputArrivePlace.value = logs.find(l => l.dateOffset === idx)?.arrivePlace || '';
     inputArrivePlace.setAttribute('aria-label', '도착지 입력');
     cellArrivePlace.appendChild(inputArrivePlace);
     row.appendChild(cellArrivePlace);
@@ -259,7 +228,7 @@ function updateTripLogForVehicle(vehicleName) {
     inputArriveKm.type = 'number';
     inputArriveKm.min = '0';
     inputArriveKm.className = 'input-km';
-    inputArriveKm.value = log ? log.arriveKm : '';
+    inputArriveKm.value = logs.find(l => l.dateOffset === idx)?.arriveKm || '';
     inputArriveKm.setAttribute('aria-label', '도착 누적거리 입력');
     cellArriveKm.appendChild(inputArriveKm);
     row.appendChild(cellArriveKm);
@@ -279,7 +248,7 @@ function updateTripLogForVehicle(vehicleName) {
     const inputFuelAmount = document.createElement('input');
     inputFuelAmount.type = 'text';
     inputFuelAmount.className = 'name-input';
-    inputFuelAmount.value = log ? log.fuelAmount : '';
+    inputFuelAmount.value = logs.find(l => l.dateOffset === idx)?.fuelAmount || '';
     inputFuelAmount.setAttribute('aria-label', '주유금액 입력');
     cellFuelAmount.appendChild(inputFuelAmount);
     row.appendChild(cellFuelAmount);
@@ -289,7 +258,7 @@ function updateTripLogForVehicle(vehicleName) {
     const inputFuelVolume = document.createElement('input');
     inputFuelVolume.type = 'text';
     inputFuelVolume.className = 'name-input';
-    inputFuelVolume.value = log ? log.fuelVolume : '';
+    inputFuelVolume.value = logs.find(l => l.dateOffset === idx)?.fuelVolume || '';
     inputFuelVolume.setAttribute('aria-label', '주유용량 입력');
     cellFuelVolume.appendChild(inputFuelVolume);
     row.appendChild(cellFuelVolume);
@@ -301,8 +270,6 @@ function updateTripLogForVehicle(vehicleName) {
       }
       const existingLogIndex = vehicleTripLogs[vehicleName].findIndex(l => l.dateOffset === idx);
       const newLog = {
-        dept: selectDept.value,
-        pos: selectPos.value,
         name: inputName.value.trim(),
         dateOffset: idx,
         departKm: '',  // 빈칸 유지
@@ -318,20 +285,14 @@ function updateTripLogForVehicle(vehicleName) {
       }
     }
 
-    inputArriveKm.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') {
-        e.preventDefault();
-        saveLog();
-        inputArriveKm.blur();
-      }
-    });
-
-    inputArriveKm.addEventListener('blur', () => {
-      saveLog();
-    });
-
-    // 다른 입력란들도 blur 시 저장 처리
-    [inputArrivePlace, inputName, inputFuelAmount, inputFuelVolume, selectDept, selectPos].forEach(el => {
+    [inputArriveKm, inputArrivePlace, inputName, inputFuelAmount, inputFuelVolume].forEach(el => {
+      el.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          saveLog();
+          el.blur();
+        }
+      });
       el.addEventListener('change', () => {
         saveLog();
       });
@@ -340,6 +301,7 @@ function updateTripLogForVehicle(vehicleName) {
       });
     });
 
+    row.appendChild(cellFuelVolume);
     tripLogTbody.appendChild(row);
   });
 }
