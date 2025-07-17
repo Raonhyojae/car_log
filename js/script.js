@@ -45,6 +45,12 @@ const basicInfoData = [
   { vehicle: '1톤 리프트 탑차', regNum: '802저2485', home: '', workplace: '', distance: '' },
 ];
 
+// 부서명 선택 옵션
+const deptOptions = ['기술지원팀', '영업팀'];
+
+// 직책 선택 옵션
+const posOptions = ['사원', '주임', '대리', '과장', '차장', '부장', '상무', '전무'];
+
 function populateBasicInfoTable() {
   const tbody = document.getElementById('basic-info-tbody');
   tbody.innerHTML = '';
@@ -139,6 +145,22 @@ function makeCellEditable(cell, type = 'text', ariaLabel = '') {
   });
 }
 
+function createSelect(options, selectedValue, ariaLabel) {
+  const select = document.createElement('select');
+  select.className = 'name-input';
+  select.setAttribute('aria-label', ariaLabel);
+  options.forEach(opt => {
+    const option = document.createElement('option');
+    option.value = opt;
+    option.textContent = opt;
+    if (opt === selectedValue) {
+      option.selected = true;
+    }
+    select.appendChild(option);
+  });
+  return select;
+}
+
 function attachVehicleClickEvent(cell) {
   cell.style.cursor = 'pointer';
   cell.title = '클릭하여 차량 선택';
@@ -221,24 +243,18 @@ function updateTripLogForVehicle(vehicleName) {
     cellSerial.textContent = `${dateObj.getMonth() + 1}월 ${dateObj.getDate()}일`;
     row.appendChild(cellSerial);
 
-    // 부서명 (빈 입력 필드)
+    // 부서명 (select)
     const cellDept = document.createElement('td');
-    const inputDept = document.createElement('input');
-    inputDept.type = 'text';
-    inputDept.className = 'name-input';
-    inputDept.value = logs.find(l => l.dateOffset === idx)?.dept || '';
-    inputDept.setAttribute('aria-label', '부서명 입력');
-    cellDept.appendChild(inputDept);
+    const selectedDept = logs.find(l => l.dateOffset === idx)?.dept || '';
+    const selectDept = createSelect(deptOptions, selectedDept, '부서명 선택');
+    cellDept.appendChild(selectDept);
     row.appendChild(cellDept);
 
-    // 직책 (빈 입력 필드)
+    // 직책 (select)
     const cellPos = document.createElement('td');
-    const inputPos = document.createElement('input');
-    inputPos.type = 'text';
-    inputPos.className = 'name-input';
-    inputPos.value = logs.find(l => l.dateOffset === idx)?.pos || '';
-    inputPos.setAttribute('aria-label', '직책 입력');
-    cellPos.appendChild(inputPos);
+    const selectedPos = logs.find(l => l.dateOffset === idx)?.pos || '';
+    const selectPos = createSelect(posOptions, selectedPos, '직책 선택');
+    cellPos.appendChild(selectPos);
     row.appendChild(cellPos);
 
     // 성명 (투명 input)
@@ -331,8 +347,8 @@ function updateTripLogForVehicle(vehicleName) {
       }
       const existingLogIndex = vehicleTripLogs[vehicleName].findIndex(l => l.dateOffset === idx);
       const newLog = {
-        dept: inputDept.value.trim(),
-        pos: inputPos.value.trim(),
+        dept: selectDept.value,
+        pos: selectPos.value,
         name: inputName.value.trim(),
         dateOffset: idx,
         departKm: '',  // 빈칸 유지
@@ -349,17 +365,17 @@ function updateTripLogForVehicle(vehicleName) {
     }
 
     [
-      inputDept, inputPos, inputArriveKm, inputArrivePlace, inputName, inputFuelAmount, inputFuelVolume
+      selectDept, selectPos, inputArriveKm, inputArrivePlace, inputName, inputFuelAmount, inputFuelVolume
     ].forEach(el => {
+      el.addEventListener('change', () => {
+        saveLog();
+      });
       el.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') {
           e.preventDefault();
           saveLog();
           el.blur();
         }
-      });
-      el.addEventListener('change', () => {
-        saveLog();
       });
       el.addEventListener('blur', () => {
         saveLog();
