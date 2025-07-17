@@ -1,3 +1,4 @@
+/* style.css */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Nanum+Gothic&display=swap');
 
 * {
@@ -56,114 +57,265 @@ h1 {
   width: auto;
   padding: 0;
 }
+@media (max-width: 640px) {
+  .info-box {
+    flex-direction: column;
+    gap: 10px;
+  }
+  .info-box div {
+    padding: 0;
+  }
+}
 .table-wrapper {
-  overflow-x: auto;
-  margin-bottom: 40px;
+  overflow-x: hidden;
+  border-radius: 12px;
+  box-shadow: inset 0 0 12px #000000aa;
+  margin-bottom: 60px;
+  position: relative;
 }
 table {
   width: 100%;
-  border-collapse: collapse;
-  font-size: 1rem;
+  table-layout: fixed;
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: 12px;
+  box-shadow: 0 4px 24px #000000bb;
+  background: #2a2a3d;
 }
-th, td {
-  padding: 12px 16px;
-  border: 1px solid #333;
+caption {
   text-align: left;
-}
-th {
-  background-color: #2a2a3d;
+  font-size: 1.8rem;
   font-weight: 600;
+  padding: 18px 24px;
+  color: #82aaff;
+  user-select: none;
+  text-shadow: 0 0 6px #82aaffaa;
+}
+thead {
+  background: linear-gradient(90deg, #3c4f76, #1a2a4a);
+  color: #cbd5e1;
+  font-weight: 600;
+  font-size: 1.1rem;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  user-select: none;
+  box-shadow: 0 2px 8px #000000cc;
+}
+thead th {
+  padding: 14px 8px;
+  border-right: 1px solid #394a6d;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: center;
+}
+thead th:last-child {
+  border-right: none;
+}
+tbody tr {
+  transition: background-color 0.3s ease;
+  cursor: default;
+}
+tbody tr:nth-child(odd) {
+  background: #32334a;
+}
+tbody tr:nth-child(even) {
+  background: #2b2b3f;
 }
 tbody tr:hover {
-  background-color: #33334d;
-  cursor: pointer;
+  background: #41518f;
+  color: #e0e7ff;
+  font-weight: 600;
 }
-tbody tr.selected {
-  background-color: #4455aa;
-  color: #fff;
-  font-weight: 700;
+tbody td {
+  padding: 12px 6px;
+  border-right: 1px solid #394a6d;
+  font-size: 0.85rem;
+  vertical-align: middle;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: center;
+  color: #d1d5db;
+  position: relative;
 }
-td.selectable-vehicle {
-  user-select: none;
+tbody td:last-child {
+  border-right: none;
 }
-td[contenteditable="true"] {
-  background-color: #222233;
+.department-select,
+.position-select {
+  width: 100%;
+  font-size: 0.85rem;
+  padding: 3px 5px;
   border-radius: 4px;
-  outline: none;
+  border: none;
+  background: transparent;
+  color: inherit;
+  white-space: nowrap;
+  cursor: pointer;
+  box-sizing: border-box;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  text-align-last: center; /* IE, Edge */
+  text-align: center; /* Firefox, Chrome */
 }
-td[contenteditable="true"]:focus {
-  background-color: #334466;
-}
-#trip-log-section {
-  background-color: #222233;
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 0 15px #4455aa88;
-}
-#trip-log-table th, #trip-log-table td {
-  border: 1px solid #555;
-}
-#trip-log-table tbody tr:nth-child(even) {
-  background-color: #1e1e2f;
-}
-form#trip-log-form fieldset {
-  border: 1px solid #4455aa;
-  border-radius: 8px;
-  padding: 15px;
-  margin-top: 20px;
-}
-form#trip-log-form legend {
-  font-weight: 600;
-  padding: 0 10px;
-  color: #82aaff;
-}
-form#trip-log-form label {
-  display: inline-block;
-  width: 120px;
-  margin-right: 10px;
-  font-weight: 600;
-}
-form#trip-log-form input[type="date"],
-form#trip-log-form input[type="number"],
-form#trip-log-form input[type="text"] {
-  width: 200px;
-  padding: 6px 8px;
-  border: 1px solid #444466;
-  border-radius: 6px;
-  background-color: #1e1e2f;
+.department-select:focus,
+.position-select:focus {
+  outline: 2px solid #82aaff;
+  background: #55699e;
   color: #e0e0e0;
 }
-form#trip-log-form button {
-  margin-left: 130px;
-  margin-top: 15px;
-  padding: 8px 20px;
-  background-color: #82aaff;
+.name-cell {
+  white-space: nowrap;
+  cursor: text;
+  font-size: 0.85rem;
+  padding: 6px 4px;
+}
+.name-input {
+  width: 100%;
+  font-size: 0.85rem;
+  padding: 3px 5px;
+  border-radius: 4px;
   border: none;
-  border-radius: 8px;
-  color: #121212;
+  background: transparent;
+  color: #e0e0e0;
+  box-sizing: border-box;
+  text-align: center;
+}
+.name-input:focus {
+  outline: 2px solid #82aaff;
+  background: transparent;
+}
+.purpose-work {
+  color: #7dd3fc;
   font-weight: 700;
+}
+.amount {
+  color: #facc15;
+  font-weight: 700;
+}
+.input-km {
+  width: 100%;
+  font-size: 0.85rem;
+  padding: 3px 5px;
+  border-radius: 4px;
+  border: none;
+  text-align: center;
+  background: transparent;
+  color: #e0e0e0;
+  box-sizing: border-box;
+}
+.input-km:focus {
+  outline: 2px solid #82aaff;
+  background: transparent;
+}
+/* 열 너비 조정: 일련번호부터 출발누적거리까지 폭 축소 */
+thead th:nth-child(1),
+tbody td:nth-child(1) { width: 5%; padding: 8px 2px; }
+thead th:nth-child(2),
+tbody td:nth-child(2) { width: 6%; padding: 8px 2px; }
+thead th:nth-child(3),
+tbody td:nth-child(3) { width: 6%; padding: 8px 2px; }
+thead th:nth-child(4),
+tbody td:nth-child(4) { width: 6%; padding: 8px 2px; }
+thead th:nth-child(5),
+tbody td:nth-child(5) { width: 5%; padding: 8px 2px; }
+thead th:nth-child(6),
+tbody td:nth-child(6) { width: 5%; padding: 8px 2px; }
+thead th:nth-child(7),
+tbody td:nth-child(7) { width: 6%; padding: 8px 2px; }
+thead th:nth-child(8),
+tbody td:nth-child(8) { width: 6%; padding: 8px 2px; }
+/* 나머지 열은 기존 너비 유지 */
+thead th:nth-child(9),
+tbody td:nth-child(9) { width: 20%; }
+thead th:nth-child(10),
+tbody td:nth-child(10) { width: 6%; }
+thead th:nth-child(11),
+tbody td:nth-child(11) { width: 6%; }
+thead th:nth-child(12),
+tbody td:nth-child(12) { width: 7%; }
+thead th:nth-child(13),
+tbody td:nth-child(13) { width: 5%; }
+thead th:nth-child(14),
+tbody td:nth-child(14) { width: 5%; }
+#add-row-container {
+  text-align: center;
+  margin-top: 8px;
+}
+#add-row-btn {
+  padding: 6px 14px;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #82aaff;
+  background: transparent;
+  border: 2px solid #82aaff;
+  border-radius: 6px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  user-select: none;
+  line-height: 1;
+  vertical-align: middle;
+  transition: background-color 0.3s, color 0.3s;
 }
-form#trip-log-form button:hover {
-  background-color: #6688dd;
+#add-row-btn:hover,
+#add-row-btn:focus {
+  background-color: #82aaff;
+  color: #121212;
+  outline: none;
 }
-@media (max-width: 768px) {
+#notice {
+  background: #2a2a3d;
+  color: #facc15;
+  font-weight: 700;
+  font-size: 1.4rem;
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 4px 24px #000000bb;
+  user-select: none;
+}
+@media (max-width: 1024px) {
+  .container {
+    padding: 30px 25px 40px 25px;
+  }
   h1 {
-    font-size: 2rem;
+    font-size: 2.4rem;
+    margin-bottom: 30px;
   }
-  .info-box {
-    flex-direction: column;
-    gap: 20px;
-    font-size: 1rem;
+  thead th, tbody td {
+    padding: 10px 4px;
+    font-size: 0.8rem;
   }
-  form#trip-log-form label, form#trip-log-form input, form#trip-log-form button {
-    width: 100%;
-    margin-left: 0;
-    margin-top: 8px;
+  caption {
+    font-size: 1.4rem;
+    padding: 14px 16px;
   }
-  form#trip-log-form button {
-    font-size: 1rem;
-    padding: 10px;
+  .input-km {
+    font-size: 0.8rem;
   }
+  .department-select,
+  .position-select {
+    font-size: 0.8rem;
+  }
+  #notice {
+    font-size: 1.1rem;
+    padding: 16px;
+  }
+}
+@media (max-width: 640px) {
+  .container {
+    padding: 20px 15px 30px 15px;
+  }
+  table {
+    font-size: 0.7rem;
+  }
+}
+td.selectable-vehicle.selected-vehicle {
+  background-color: #41518f;
+  color: #e0e7ff;
+  font-weight: 700;
+  border-radius: 6px;
+  user-select: none;
 }
