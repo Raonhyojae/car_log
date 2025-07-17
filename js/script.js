@@ -22,10 +22,7 @@ const vehicleTripLogs = {
   ],
 };
 
-function isHoliday(dateStr) {
-  return holidays.includes(dateStr);
-}
-
+// 평일(월~금)만 반환하며 공휴일 제외
 function getWorkingDays(year, month) {
   const days = [];
   const lastDate = new Date(year, month + 1, 0).getDate();
@@ -33,7 +30,7 @@ function getWorkingDays(year, month) {
     const date = new Date(year, month, d);
     const dayOfWeek = date.getDay();
     const dateStr = date.toISOString().slice(0, 10);
-    if (dayOfWeek !== 0 && dayOfWeek !== 6 && !isHoliday(dateStr)) {
+    if (dayOfWeek !== 0 && dayOfWeek !== 6 && !holidays.includes(dateStr)) {
       days.push(date);
     }
   }
@@ -351,7 +348,6 @@ function updateTripLogForVehicle(vehicleName) {
     function recalcDriveAndCumulative() {
       const departKmNum = Number(cellDepartKm.textContent) || 0;
       const arriveValRaw = inputArriveKm.value.trim();
-      // 수정: 도착 누적거리가 비었으면 출발누적거리와 같게 처리하여 첫 행부터 계산 정상화
       const arriveKmNum = arriveValRaw === '' ? departKmNum : Number(arriveValRaw);
       let driveKm = arriveKmNum - departKmNum;
       if (driveKm < 0) driveKm = 0;
