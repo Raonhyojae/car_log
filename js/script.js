@@ -11,14 +11,14 @@ const vehicleTripLogs = {
   '레이밴': [
     { dept: '', pos: '', name: '', dateOffset: 2, departKm: '', arrivePlace: '', arriveKm: '', fuelAmount: '', fuelVolume: '' },
   ],
+  '레이밴': [
+    { dept: '', pos: '', name: '', dateOffset: 0, departKm: '', arrivePlace: '', arriveKm: '', fuelAmount: '', fuelVolume: '' },
+  ],
   '스타리아': [
     { dept: '', pos: '', name: '', dateOffset: 3, departKm: '', arrivePlace: '', arriveKm: '', fuelAmount: '', fuelVolume: '' },
   ],
   '1톤 리프트 탑차': [
     { dept: '', pos: '', name: '', dateOffset: 4, departKm: '', arrivePlace: '', arriveKm: '', fuelAmount: '', fuelVolume: '' },
-  ],
-  '레이밴 282우6998': [
-    { dept: '', pos: '', name: '', dateOffset: 0, departKm: '', arrivePlace: '', arriveKm: '', fuelAmount: '', fuelVolume: '' },
   ],
 };
 
@@ -35,6 +35,47 @@ function getWorkingDays(year, month) {
     }
   }
   return days;
+}
+
+// 기본정보 초기 데이터
+const basicInfoData = [
+  { vehicle: '레이밴', regNum: '185나8606', home: '', workplace: '', distance: '' },
+  { vehicle: '레이밴', regNum: '282우6998', home: '', workplace: '', distance: '' },
+  { vehicle: '스타리아', regNum: '823로5420', home: '', workplace: '', distance: '' },
+  { vehicle: '1톤 리프트 탑차', regNum: '802저2485', home: '', workplace: '', distance: '' },
+];
+
+function populateBasicInfoTable() {
+  const tbody = document.getElementById('basic-info-tbody');
+  tbody.innerHTML = '';
+  basicInfoData.forEach(item => {
+    const row = document.createElement('tr');
+
+    const tdVehicle = document.createElement('td');
+    tdVehicle.className = 'selectable-vehicle';
+    tdVehicle.textContent = item.vehicle;
+    row.appendChild(tdVehicle);
+
+    const tdRegNum = document.createElement('td');
+    tdRegNum.textContent = item.regNum;
+    row.appendChild(tdRegNum);
+
+    const tdHome = document.createElement('td');
+    tdHome.className = 'editable-text';
+    tdHome.textContent = item.home;
+    row.appendChild(tdHome);
+
+    const tdWorkplace = document.createElement('td');
+    tdWorkplace.textContent = item.workplace;
+    row.appendChild(tdWorkplace);
+
+    const tdDistance = document.createElement('td');
+    tdDistance.className = 'editable-number';
+    tdDistance.textContent = item.distance;
+    row.appendChild(tdDistance);
+
+    tbody.appendChild(row);
+  });
 }
 
 function applyBasicInfoEditableFeatures(tbody) {
@@ -341,6 +382,8 @@ function setupEscKeyHandler() {
 window.addEventListener('DOMContentLoaded', () => {
   const today = new Date();
   document.getElementById('business-year').textContent = today.getFullYear() + '년';
+
+  populateBasicInfoTable();
 
   const basicInfoTbody = document.getElementById('basic-info-tbody');
   applyBasicInfoEditableFeatures(basicInfoTbody);
