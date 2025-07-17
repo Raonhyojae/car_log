@@ -1,102 +1,53 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>차량운행기록부 - 7월 출발누적거리 고정 및 차량 추가</title>
-  <link rel="stylesheet" href="css/styles.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로그인 화면</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        form {
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        input[type="submit"] {
+            background: #5cb85c;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        input[type="submit"]:hover {
+            background: #4cae4c;
+        }
+    </style>
 </head>
 <body>
-  <div class="container" role="main" aria-label="차량운행기록부">
-    <h1>차량운행기록부</h1>
-
-    <div class="info-box" role="region" aria-label="사업 정보">
-      <div><strong>사업연도</strong> : <span id="business-year">로딩중...</span></div>
-      <div><strong>사업자 등록번호</strong> : 214-86-53129</div>
-    </div>
-
-    <div class="table-wrapper" aria-label="기본 정보">
-      <table aria-describedby="basic-info-caption" id="basic-info-table">
-        <caption id="basic-info-caption">기본 정보 (차량 선택: 차종 클릭)</caption>
-        <thead>
-          <tr>
-            <th scope="col">차종</th>
-            <th scope="col">자동차등록번호</th>
-            <th scope="col">자택</th>
-            <th scope="col">근무지</th>
-            <th scope="col">출퇴근거리 (km)</th>
-          </tr>
-        </thead>
-        <tbody id="basic-info-tbody">
-          <tr data-vehicle="레이밴">
-            <td class="selectable-vehicle">레이밴</td>
-            <td>185나8606</td>
-            <td class="editable-text"></td>
-            <td>㈜이스트림</td>
-            <td class="editable-number"></td>
-          </tr>
-          <tr data-vehicle="스타리아">
-            <td class="selectable-vehicle">스타리아</td>
-            <td>823로5420</td>
-            <td class="editable-text"></td>
-            <td>㈜이스트림</td>
-            <td class="editable-number"></td>
-          </tr>
-          <tr data-vehicle="1톤 리프트 탑차">
-            <td class="selectable-vehicle">1톤 리프트 탑차</td>
-            <td>802저2485</td>
-            <td class="editable-text"></td>
-            <td>㈜이스트림</td>
-            <td class="editable-number"></td>
-          </tr>
-          <tr data-vehicle="레이밴 282우6998">
-            <td class="selectable-vehicle">레이밴 282우6998</td>
-            <td>282우6998</td>
-            <td class="editable-text"></td>
-            <td>㈜이스트림</td>
-            <td class="editable-number"></td>
-          </tr>
-        </tbody>
-      </table>
-      <div id="add-row-container">
-        <button id="add-row-btn" aria-label="행 추가">+</button>
-      </div>
-    </div>
-
-    <div id="notice" role="alert" aria-live="polite" style="display:none;">
-      차량을 선택해주세요. 기본정보에서 차종을 클릭하면 해당 차량의 운행 기록이 표시됩니다.<br>
-      부서와 직책은 선택할 수 있게 되어있고, 출발누적거리와 주행거리, 업무용주행거리누계는<br>
-      수정이 불가합니다.<br>
-    </div>
-
-    <div class="table-wrapper" aria-label="운행 기록" id="trip-log-wrapper" style="display:none;">
-      <table aria-describedby="trip-log-caption">
-        <caption id="trip-log-caption">운행 기록</caption>
-        <thead>
-          <tr>
-            <th scope="col">일련번호</th>
-            <th scope="col">부서</th>
-            <th scope="col">직책</th>
-            <th scope="col">성명</th>
-            <th scope="col" class="use-date-col">사용<br>목적</th>
-            <th scope="col" class="use-date-col">사용<br>일자</th>
-            <th scope="col" class="departure-col">출발지</th>
-            <th scope="col" class="use-date-col">출발<br>누적<br>거리<br>(km)</th>
-            <th scope="col">도착지</th>
-            <th scope="col" class="use-date-col">도착<br>누적<br>거리<br>(km)</th>
-            <th scope="col" class="use-date-col">주행<br>거리<br>(km)</th>
-            <th scope="col" class="use-date-col">업무용<br>주행<br>거리<br>누계<br>(km)</th>
-            <th scope="col">주유<br>금액<br>(원)</th>
-            <th scope="col">주유<br>용량<br>(L)</th>
-          </tr>
-        </thead>
-        <tbody id="trip-log-tbody">
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <script src="js/script.js"></script>
+    <h1>로그인</h1>
+    <form action="login.php" method="post">
+        <label for="username">사용자 이름:</label>
+        <input type="text" id="username" name="username" required><br>
+        <label for="password">비밀번호:</label>
+        <input type="password" id="password" name="password" required><br>
+        <input type="submit" value="로그인">
+    </form>
 </body>
 </html>
