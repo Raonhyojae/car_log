@@ -402,11 +402,11 @@ window.addEventListener('DOMContentLoaded', () => {
   const today = new Date();
   document.getElementById('business-year').textContent = today.getFullYear() + '년';
 
-  // 스타일 추가: 옅은 보라 배경, 화살표 제거
+  // 스타일 추가: 화살표 제거, 배경은 테이블 배경색과 동일하게 (흰색 가정)
   const style = document.createElement('style');
   style.textContent = `
     select.${selectClassName} {
-      background-color: #E6E0F8; /* 옅은 보라색 */
+      background-color: white; /* 테이블 기본 배경색과 동일하게 변경 */
       border: 1px solid #ccc;
       padding: 2px 6px;
       appearance: none;
