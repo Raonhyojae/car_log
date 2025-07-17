@@ -3,99 +3,67 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>차량운행기록부 - 7월 출발누적거리 고정 및 차량 추가</title>
-  <link rel="stylesheet" href="css/styles.css" />
+  <title>차량운행기록부 - 수정본</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="container" role="main" aria-label="차량운행기록부">
+  <div class="container">
     <h1>차량운행기록부</h1>
-
-    <div class="info-box" role="region" aria-label="사업 정보">
-      <div><strong>사업연도</strong> : <span id="business-year">로딩중...</span></div>
-      <div><strong>사업자 등록번호</strong> : 214-86-53129</div>
+    <div class="info-box">
+      <div>2025년 7월</div>
+      <div>출발누적거리 고정 및 차량 추가</div>
     </div>
-
-    <div class="table-wrapper" aria-label="기본 정보">
-      <table aria-describedby="basic-info-caption" id="basic-info-table">
-        <caption id="basic-info-caption">기본 정보 (차량 선택: 차종 클릭)</caption>
+    <div class="table-wrapper">
+      <table>
+        <caption>7월 차량 운행 기록</caption>
         <thead>
           <tr>
-            <th scope="col">차종</th>
-            <th scope="col">자동차등록번호</th>
-            <th scope="col">자택</th>
-            <th scope="col">근무지</th>
-            <th scope="col">출퇴근거리 (km)</th>
-          </tr>
-        </thead>
-        <tbody id="basic-info-tbody">
-          <tr data-vehicle="레이밴">
-            <td class="selectable-vehicle">레이밴</td>
-            <td>185나8606</td>
-            <td class="editable-text"></td>
-            <td>㈜이스트림</td>
-            <td class="editable-number"></td>
-          </tr>
-          <tr data-vehicle="스타리아">
-            <td class="selectable-vehicle">스타리아</td>
-            <td>823로5420</td>
-            <td class="editable-text"></td>
-            <td>㈜이스트림</td>
-            <td class="editable-number"></td>
-          </tr>
-          <tr data-vehicle="1톤 리프트 탑차">
-            <td class="selectable-vehicle">1톤 리프트 탑차</td>
-            <td>802저2485</td>
-            <td class="editable-text"></td>
-            <td>㈜이스트림</td>
-            <td class="editable-number"></td>
-          </tr>
-          <tr data-vehicle="레이밴 282우6998">
-            <td class="selectable-vehicle">레이밴 282우6998</td>
-            <td>282우6998</td>
-            <td class="editable-text"></td>
-            <td>㈜이스트림</td>
-            <td class="editable-number"></td>
-          </tr>
-        </tbody>
-      </table>
-      <div id="add-row-container">
-        <button id="add-row-btn" aria-label="행 추가">+</button>
-      </div>
-    </div>
-
-    <div id="notice" role="alert" aria-live="polite" style="display:none;">
-      차량을 선택해주세요. 기본정보에서 차종을 클릭하면 해당 차량의 운행 기록이 표시됩니다.<br>
-      부서와 직책은 선택할 수 있게 되어있고, 출발누적거리와 주행거리, 업무용주행거리누계는<br>
-      수정이 불가합니다.<br>
-    </div>
-
-    <div class="table-wrapper" aria-label="운행 기록" id="trip-log-wrapper" style="display:none;">
-      <table aria-describedby="trip-log-caption">
-        <caption id="trip-log-caption">운행 기록</caption>
-        <thead>
-          <tr>
-            <th scope="col">일련번호</th>
-            <th scope="col">부서</th>
-            <th scope="col">직책</th>
-            <th scope="col">성명</th>
-            <th scope="col" class="use-date-col">사용<br>목적</th>
-            <th scope="col" class="use-date-col">사용<br>일자</th>
-            <th scope="col" class="departure-col">출발지</th>
-            <th scope="col" class="use-date-col">출발<br>누적<br>거리<br>(km)</th>
-            <th scope="col">도착지</th>
-            <th scope="col" class="use-date-col">도착<br>누적<br>거리<br>(km)</th>
-            <th scope="col" class="use-date-col">주행<br>거리<br>(km)</th>
-            <th scope="col" class="use-date-col">업무용<br>주행<br>거리<br>누계<br>(km)</th>
-            <th scope="col">주유<br>금액<br>(원)</th>
-            <th scope="col">주유<br>용량<br>(L)</th>
+            <th>일련번호</th>
+            <th>부서명</th>
+            <th>직책</th>
+            <th>성명</th>
+            <th>차종</th>
+            <th>차량번호</th>
+            <th>출발일자</th>
+            <th>출발시간</th>
+            <th>목적</th>
+            <th>출발누적거리</th>
+            <th>도착누적거리</th>
+            <th>주행거리</th>
+            <th>주유량</th>
+            <th>비고</th>
           </tr>
         </thead>
         <tbody id="trip-log-tbody">
+          <tr>
+            <td>1</td>
+            <!-- 부서명 빈 입력필드 -->
+            <td><input type="text" class="input-text" /></td>
+            <!-- 직책 빈 입력필드 -->
+            <td><input type="text" class="input-text" /></td>
+            <td><input type="text" class="input-text" /></td>
+            <td>승용차</td>
+            <td>12가3456</td>
+            <td>2025-07-01</td>
+            <td>08:00</td>
+            <td>업무</td>
+            <!-- 출발누적거리 빈 입력필드 -->
+            <td><input type="text" class="input-text" /></td>
+            <!-- 도착누적거리 빈 입력필드 -->
+            <td><input type="text" class="input-text" /></td>
+            <!-- 주행거리 빈 입력필드 -->
+            <td><input type="text" class="input-text" /></td>
+            <td><input type="text" class="input-text" /></td>
+            <td></td>
+          </tr>
+          <!-- 추가 행도 동일 구조로 빈 입력필드 유지 가능 -->
         </tbody>
       </table>
     </div>
+    <div id="add-row-container">
+      <button id="add-row-btn">+ 행 추가</button>
+    </div>
   </div>
-
-  <script src="js/script.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
