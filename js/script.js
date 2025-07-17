@@ -172,31 +172,6 @@ function updateTripLogForVehicle(vehicleName) {
 
   const logs = vehicleTripLogs[vehicleName] || [];
 
-  // 7월에만 고정 출발누적거리 값 설정
-  const julyFixedDepartKmMap = {
-    '레이밴': '65874',
-    '스타리아': '16488',
-    '1톤 리프트 탑차': '32972',
-    '레이밴 282우6998': '5235',
-  };
-
-  // 전달 마지막날 도착누적거리 구하기 (arriveKm 기준) - 7월 고정값 적용 제외
-  let prevMonthLastDayArriveKm = '0';
-  if (month !== 6) { // 6은 7월 (0부터 시작)
-    const prevMonth = month === 0 ? 11 : month - 1;
-    const prevYear = month === 0 ? year - 1 : year;
-    const prevMonthWorkingDays = getWorkingDays(prevYear, prevMonth);
-    if (prevMonthWorkingDays.length > 0) {
-      const prevLastDayIndex = prevMonthWorkingDays.length - 1;
-      const prevLastDayLog = (vehicleTripLogs[vehicleName] || []).find(l => l.dateOffset === prevLastDayIndex);
-      if (prevLastDayLog && prevLastDayLog.arriveKm && prevLastDayLog.arriveKm.trim() !== '') {
-        prevMonthLastDayArriveKm = prevLastDayLog.arriveKm.trim();
-      }
-    }
-  }
-
-  let cumulativeWorkDriveKm = 0;
-
   workingDays.forEach((dateObj, idx) => {
     const row = document.createElement('tr');
 
@@ -263,35 +238,9 @@ function updateTripLogForVehicle(vehicleName) {
     cellDeparture.textContent = "사무실";
     row.appendChild(cellDeparture);
 
-    // 출발누적거리
+    // 출발누적거리 (빈칸)
     const cellDepartKm = document.createElement('td');
-    let departKmVal = '';
-
-    if (idx === 0) {
-      // 7월이면 고정값 적용, 아니면 전달 마지막날 도착누적거리
-      if (month === 6 && julyFixedDepartKmMap[vehicleName]) {
-        departKmVal = julyFixedDepartKmMap[vehicleName];
-      } else {
-        departKmVal = prevMonthLastDayArriveKm || '0';
-      }
-    } else {
-      // 두번째 행부터: 전날 도착누적거리 표시
-      const prevRow = tripLogTbody.rows[idx - 1];
-      if (prevRow) {
-        const prevArriveKmCell = prevRow.cells[9];
-        let prevArriveKm = '';
-        const prevInput = prevArriveKmCell.querySelector('input');
-        if (prevInput) {
-          prevArriveKm = prevInput.value.trim() || '0';
-        } else {
-          prevArriveKm = prevArriveKmCell.textContent.trim() || '0';
-        }
-        departKmVal = prevArriveKm;
-      } else {
-        departKmVal = '0';
-      }
-    }
-    cellDepartKm.textContent = departKmVal;
+    cellDepartKm.textContent = '';
     row.appendChild(cellDepartKm);
 
     // 도착지 (투명 input)
@@ -315,12 +264,12 @@ function updateTripLogForVehicle(vehicleName) {
     cellArriveKm.appendChild(inputArriveKm);
     row.appendChild(cellArriveKm);
 
-    // 주행거리 (계산 값)
+    // 주행거리 (빈칸)
     const cellDriveKm = document.createElement('td');
     cellDriveKm.textContent = '';
     row.appendChild(cellDriveKm);
 
-    // 업무용주행거리누계 (계산 값)
+    // 업무용주행거리누계 (빈칸)
     const cellWorkDriveKm = document.createElement('td');
     cellWorkDriveKm.textContent = '';
     row.appendChild(cellWorkDriveKm);
@@ -345,29 +294,7 @@ function updateTripLogForVehicle(vehicleName) {
     cellFuelVolume.appendChild(inputFuelVolume);
     row.appendChild(cellFuelVolume);
 
-    function recalcDriveAndCumulative() {
-      const departKmNum = Number(cellDepartKm.textContent) || 0;
-      const arriveValRaw = inputArriveKm.value.trim();
-      const arriveKmNum = arriveValRaw === '' ? departKmNum : Number(arriveValRaw);
-      let driveKm = arriveKmNum - departKmNum;
-      if (driveKm < 0) driveKm = 0;
-      cellDriveKm.textContent = driveKm;
-
-      if (idx === 0) {
-        cumulativeWorkDriveKm = driveKm;
-        cellWorkDriveKm.textContent = cumulativeWorkDriveKm;
-      } else {
-        const prevRow = tripLogTbody.rows[idx - 1];
-        let prevCumulative = 0;
-        if (prevRow) {
-          const prevWorkDriveCell = prevRow.cells[11];
-          prevCumulative = Number(prevWorkDriveCell.textContent) || 0;
-        }
-        cumulativeWorkDriveKm = prevCumulative + driveKm;
-        cellWorkDriveKm.textContent = cumulativeWorkDriveKm;
-      }
-    }
-
+    // 저장 함수 (입력값만 저장)
     function saveLog() {
       if (!vehicleTripLogs[vehicleName]) {
         vehicleTripLogs[vehicleName] = [];
@@ -378,7 +305,7 @@ function updateTripLogForVehicle(vehicleName) {
         pos: selectPos.value,
         name: inputName.value.trim(),
         dateOffset: idx,
-        departKm: cellDepartKm.textContent.trim(),
+        departKm: '',  // 빈칸 유지
         arrivePlace: inputArrivePlace.value.trim(),
         arriveKm: inputArriveKm.value.trim(),
         fuelAmount: inputFuelAmount.value.trim(),
@@ -395,18 +322,23 @@ function updateTripLogForVehicle(vehicleName) {
       if (e.key === 'Enter') {
         e.preventDefault();
         saveLog();
-        recalcDriveAndCumulative();
         inputArriveKm.blur();
       }
     });
 
     inputArriveKm.addEventListener('blur', () => {
       saveLog();
-      recalcDriveAndCumulative();
     });
 
-    // 최초 계산 실행
-    recalcDriveAndCumulative();
+    // 다른 입력란들도 blur 시 저장 처리
+    [inputArrivePlace, inputName, inputFuelAmount, inputFuelVolume, selectDept, selectPos].forEach(el => {
+      el.addEventListener('change', () => {
+        saveLog();
+      });
+      el.addEventListener('blur', () => {
+        saveLog();
+      });
+    });
 
     tripLogTbody.appendChild(row);
   });
